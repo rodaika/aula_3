@@ -11,19 +11,19 @@ namespace App.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PessoaController : Controller
+    public class CidadeController : Controller
     {
-        private IPessoaService _service;
+        private ICidadeService _service;
 
-        public PessoaController(IPessoaService service)
+        public CidadeController(ICidadeService service)
         {
             _service = service;
         }
 
-        [HttpGet("ListaPessoas")]
-        public JsonResult ListaPessoas()
+        [HttpGet("ListaCidade")]
+        public JsonResult ListaCidade()
         {
-            return Json(new { lista = _service.listaPessoas() });
+            return Json(new { lista = _service.listaCidade() });
         }
         [HttpGet("BuscaPorId")]
         public JsonResult BuscaPorId(Guid id)
@@ -31,15 +31,13 @@ namespace App.Api.Controllers
             return Json(_service.BuscaPorId(id));
         }
         [HttpPost("Salvar")]
-        public JsonResult Salvar(string nome, int peso, DateTime dataNascimento, bool ativo, Guid idcidade)
+        public JsonResult Salvar(string nome, string cep, string uf)
         {
-            var obj = new Pessoa
+            var obj = new Cidade
             {
                 Nome = nome,
-                DataNascimento = dataNascimento,
-                Peso = peso,
-                Ativo = ativo,
-                CidadeId = idcidade
+                Cep = cep,
+                Uf = uf
             };
             _service.Salvar(obj);
             return Json(true);
@@ -48,7 +46,8 @@ namespace App.Api.Controllers
         public JsonResult Remover(Guid id)
         {
             _service.Remover(id);
-            return Json(null);
+            return Json(true);
         }
+  
     }
 }
